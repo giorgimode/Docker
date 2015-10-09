@@ -21,11 +21,20 @@ RUN echo 'admin:password' | chpasswd
    && apt-get install -y grep \
     && apt-get install -y ngrep
      
-     RUN (curl -L -k -b "oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u60-b27/server-jre-8u60-linux-x64.tar.gz | gunzip -c | tar x) \
-    && mv /jdk1.8.0_60 /opt/jdk
-ENV JAVA_HOME /opt/jdk
-ENV JRE_HOME  $JAVA_HOME/jre
-ENV PATH $PATH:$JAVA_HOME/bin
+     RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main"\
+    > /etc/apt/sources.list.d/webupd8team-java.list \
+    && echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main"\
+    >> /etc/apt/sources.list.d/webupd8team-java.list \
+    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886 \
+    && apt-get update -y \
+    && echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections \
+    && apt-get install -y --no-install-recommends oracle-java8-installer=8u60+8u60arm-1~webupd8~1 \
+    && apt-get autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# set environment
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
     
  RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*      
  
