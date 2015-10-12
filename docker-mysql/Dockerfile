@@ -24,3 +24,6 @@ RUN chmod +x /usr/local/bin/start-database.sh
 EXPOSE 3306
 
 CMD ["/usr/local/bin/start-database.sh"]
+
+
+
