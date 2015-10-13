@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2012 - 2014 Michal Čihař <michal@cihar.com>
+# Copyright © 2012 - 2015 Michal Čihař <michal@cihar.com>
 #
 # This file is part of Weblate <http://weblate.org/>
 #
@@ -18,10 +18,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-#
-# Safety check for running with too old Django version
-#
-
 import django
 import os
 from logging.handlers import SysLogHandler
@@ -30,9 +26,9 @@ from logging.handlers import SysLogHandler
 # Safety check for running with too old Django version
 #
 
-if django.VERSION < (1, 7, 0):
+if django.VERSION < (1, 4, 0):
     raise Exception(
-        'Weblate needs Django 1.7 or newer, you are using %s!' %
+        'Weblate needs Django 1.4 or newer, you are using %s!' %
         django.get_version()
     )
 
@@ -40,28 +36,64 @@ if django.VERSION < (1, 7, 0):
 # Django settings for Weblate project.
 #
 
-DEBUG = True
+DEBUG = os.environ.get('WEBLATE_DEBUG', '1') == '1'
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-        ('Wichert Akkerman', 'wichert@curvetips.com'),
+    (os.environ['WEBLATE_ADMIN_NAME'], os.environ['WEBLATE_ADMIN_EMAIL']),
     # ('Your Name', 'your_email@example.com'),
 )
 
 MANAGERS = ADMINS
 
+DATABASES = {}
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Data directory
-DATA_DIR = '/app/data'
-
-DATABASES = {
-    'default': {
+if 'DATABASE_PORT_3306_TCP_ADDR' in os.environ:
+    DATABASES['default'] = {
+        # Use 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.mysql',
+        # Database name or path to database file if using sqlite3.
+        'NAME': os.environ['DATABASE_ENV_MYSQL_DATABASE'],
+        # Use same database for tests (needed as Docker MySQL can
+        # not currently create second database for us)
+        'TEST': {'NAME': os.environ['DATABASE_ENV_MYSQL_DATABASE']},
+        # Database user, not used with sqlite3.
+        'USER': os.environ['DATABASE_ENV_MYSQL_USER'],
+        # Database password, not used with sqlite3.
+        'PASSWORD': os.environ['DATABASE_ENV_MYSQL_PASSWORD'],
+        # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': os.environ['DATABASE_PORT_3306_TCP_ADDR'],
+        # Set to empty string for default. Not used with sqlite3.
+        'PORT': os.environ['DATABASE_PORT_3306_TCP_PORT'],
+        'OPTIONS': {
+           'init_command': 'SET storage_engine=INNODB',
+           'charset': 'utf8',
+        },
+    }
+elif 'DATABASE_PORT_5432_TCP_ADDR' in os.environ:
+    DATABASES['default'] = {
+        # Use 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # Database name or path to database file if using sqlite3.
+        'NAME': os.environ['DATABASE_ENV_POSTGRES_USER'],
+        # Use same database for tests (needed as Docker MySQL can
+        # not currently create second database for us)
+        'TEST': {'NAME': os.environ['DATABASE_ENV_POSTGRES_USER']},
+        # Database user, not used with sqlite3.
+        'USER': os.environ['DATABASE_ENV_POSTGRES_USER'],
+        # Database password, not used with sqlite3.
+        'PASSWORD': os.environ['DATABASE_ENV_POSTGRES_PASSWORD'],
+        # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': os.environ['DATABASE_PORT_5432_TCP_ADDR'],
+        # Set to empty string for default. Not used with sqlite3.
+        'PORT': os.environ['DATABASE_PORT_5432_TCP_PORT'],
+    }
+else:
+    DATABASES['default'] = {
         # Use 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'ENGINE': 'django.db.backends.sqlite3',
         # Database name or path to database file if using sqlite3.
-        'NAME': os.path.join(DATA_DIR, 'weblate.db'),
+        'NAME': '/app/data/weblate.db',
         # Database user, not used with sqlite3.
         'USER': 'weblate',
         # Database password, not used with sqlite3.
@@ -71,7 +103,12 @@ DATABASES = {
         # Set to empty string for default. Not used with sqlite3.
         'PORT': '',
     }
-}
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Data directory
+DATA_DIR = '/app/data'
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -79,7 +116,7 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Prague'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -88,6 +125,7 @@ LANGUAGE_CODE = 'en-us'
 LANGUAGES = (
     ('az', u'Azərbaycan'),
     ('be', u'Беларуская'),
+    ('be@latin', u'Biełaruskaja'),
     ('br', u'Brezhoneg'),
     ('ca', u'Català'),
     ('cs', u'Čeština'),
@@ -98,6 +136,7 @@ LANGUAGES = (
     ('es', u'Español'),
     ('fi', u'Suomi'),
     ('fr', u'Français'),
+    ('fy', u'Frysk'),
     ('gl', u'Galego'),
     ('he', u'עברית'),
     ('hu', u'Magyar'),
@@ -112,11 +151,12 @@ LANGUAGES = (
     ('ru', u'Русский'),
     ('sk', u'Slovenčina'),
     ('sl', u'Slovenščina'),
+    ('sr', u'Српски'),
     ('sv', u'Svenska'),
     ('tr', u'Türkçe'),
     ('uk', u'Українська'),
-    ('zh_CN', u'简体字'),
-    ('zh_TW', u'正體字'),
+    ('zh-Hans', u'简体字'),
+    ('zh-Hant', u'正體字'),
 )
 
 SITE_ID = 1
@@ -187,7 +227,7 @@ GITHUB_USERNAME = None
 
 # Authentication configuration
 AUTHENTICATION_BACKENDS = (
-    'weblate.accounts.auth.EmailAuth',
+    'social.backends.email.EmailAuth',
     # 'social.backends.google.GoogleOAuth2',
     # 'social.backends.github.GithubOAuth2',
     # 'social.backends.bitbucket.BitbucketOAuth',
@@ -226,7 +266,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.mail.mail_validation',
     'social.pipeline.social_auth.associate_by_email',
     'weblate.accounts.pipeline.verify_open',
-    'weblate.accounts.pipeline.verify_username',
     'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
@@ -290,12 +329,6 @@ INSTALLED_APPS = (
     'weblate',
 )
 
-# South setup for Django < 1.7
-if django.VERSION < (1, 7, 0):
-    INSTALLED_APPS += (
-        'south',
-    )
-
 LOCALE_PATHS = (os.path.join(BASE_DIR, '..', 'locale'), )
 
 
@@ -327,7 +360,7 @@ else:
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
+# See http://docs.djangoproject.com/en/stable/topics/logging for
 # more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
@@ -394,12 +427,14 @@ LOGGING = {
     }
 }
 
+# Logging of management commands to console
+if (os.environ.get('DJANGO_IS_MANAGEMENT_COMMAND', False) and
+        'console' not in LOGGING['loggers']['weblate']['handlers']):
+    LOGGING['loggers']['weblate']['handlers'].append('console')
+
+# Remove syslog setup if it's not present
 if not os.path.exists('/dev/log'):
     del LOGGING['handlers']['syslog']
-
-# Logging of management commands to console
-if os.environ.get('DJANGO_IS_MANAGEMENT_COMMAND', False):
-    LOGGING['loggers']['weblate']['handlers'].append('console')
 
 # Machine translation API keys
 
@@ -428,9 +463,6 @@ MT_TMSERVER = None
 # Title of site to use
 SITE_TITLE = u'Weblate'
 
-# Whether to offer hosting
-OFFER_HOSTING = False
-
 # URL of login
 LOGIN_URL = '%s/accounts/login/' % URL_PREFIX
 
@@ -447,7 +479,7 @@ ANONYMOUS_USER_NAME = 'anonymous'
 EMAIL_SEND_HTML = False
 
 # Subject of emails includes site title
-EMAIL_SUBJECT_PREFIX = u'[%s] ' % SITE_TITLE
+EMAIL_SUBJECT_PREFIX = u'[{0}] '.format(SITE_TITLE)
 
 # Enable remote hooks
 ENABLE_HOOKS = True
@@ -528,30 +560,38 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # )
 
 # E-mail address that error messages come from.
-SERVER_EMAIL = 'noreply@weblate.org'
+SERVER_EMAIL = os.environ['WEBLATE_EMAIL']
 
 # Default email address to use for various automated correspondence from
 # the site managers. Used for registration emails.
-DEFAULT_FROM_EMAIL = 'noreply@weblate.org'
+DEFAULT_FROM_EMAIL = os.environ['WEBLATE_EMAIL']
 
-# List of URLs your site is supposed to serve, required since Django 1.5
+# List of URLs your site is supposed to serve
 ALLOWED_HOSTS = []
 
 # Example configuration to use memcached for caching
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-#         'LOCATION': '127.0.0.1:11211',
-#     },
-#     'avatar': {
-#         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-#         'LOCATION': os.path.join(BASE_DIR, 'avatar-cache'),
-#         'TIMEOUT': 604800,
-#         'OPTIONS': {
-#             'MAX_ENTRIES': 1000,
-#         },
-#     }
-# }
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'avatar': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(DATA_DIR, 'avatar-cache'),
+        'TIMEOUT': 604800,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000,
+        },
+    }
+}
+
+if 'CACHE_PORT_11211_TCP_ADDR' in os.environ:
+    CACHES['default'] = {
+         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+         'LOCATION': '{0}:{1}'.format(
+            os.environ['CACHE_PORT_11211_TCP_ADDR'],
+            os.environ['CACHE_PORT_11211_TCP_PORT'],
+        )
+    }
 
 # Example for restricting access to logged in users
 # LOGIN_REQUIRED_URLS = (
@@ -561,7 +601,7 @@ ALLOWED_HOSTS = []
 # In such case you will want to include some of the exceptions
 # LOGIN_REQUIRED_URLS_EXCEPTIONS = (
 #    r'/accounts/(.*)$', # Required for login
-#    r'/static/(.*)$',    # Required for development mode
+#    r'/media/(.*)$',    # Required for development mode
 #    r'/widgets/(.*)$',  # Allowing public access to widgets
 #    r'/data/(.*)$',     # Allowing public access to data exports
 #    r'/hooks/(.*)$',    # Allowing public access to notification hooks
@@ -572,3 +612,10 @@ ENABLE_WHITEBOARD = False
 
 # Force sane test runner
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+# Email server
+EMAIL_USE_TLS = True
+EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_PORT = 587
