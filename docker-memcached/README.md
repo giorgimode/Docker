@@ -1,6 +1,6 @@
 # About this Repo
 
-Tthe official Docker image for [memcached](https://registry.hub.docker.com/_/memcached/). 
+This is memory Memcached docker image for poolingpeople.
 
 The full readme is generated over in [docker-library/docs](https://github.com/docker-library/docs),
 specificially in [docker-library/docs/memcached](https://github.com/docker-library/docs/tree/master/memcached).
@@ -60,7 +60,7 @@ Documentation for this image is stored in the [`memcached/` directory](https://g
 
 ## Issues
 
-If you have any problems with or questions about this image, please contact us through a [GitHub issue](https://github.com/docker-library/memcached/issues).
+If you have any problems with or questions about this image, please contact through a [GitHub issue](https://github.com/docker-library/memcached/issues).
 
 You can also reach many of the official image maintainers via the `#docker-library` IRC channel on [Freenode](https://freenode.net).
 
