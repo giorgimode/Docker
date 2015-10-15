@@ -95,9 +95,9 @@ else:
         # Database name or path to database file if using sqlite3.
         'NAME': '/app/data/weblate.db',
         # Database user, not used with sqlite3.
-        'USER': 'weblate',
+        'USER': os.environ['DATABASE_ENV_POSTGRES_USER'],
         # Database password, not used with sqlite3.
-        'PASSWORD': 'weblate',
+        'PASSWORD': os.environ['DATABASE_ENV_POSTGRES_PASSWORD'],
         # Set to empty string for localhost. Not used with sqlite3.
         'HOST': '127.0.0.1',
         # Set to empty string for default. Not used with sqlite3.
@@ -236,7 +236,25 @@ AUTHENTICATION_BACKENDS = (
     # 'social.backends.fedora.FedoraOpenId',
     # 'social.backends.facebook.FacebookOAuth2',
     'weblate.accounts.auth.WeblateUserBackend',
+     #'django_auth_ldap.backend.LDAPBackend',
 )
+
+## LDAP server address
+#AUTH_LDAP_SERVER_URI = 'ldaps://ldap.example.net'
+
+## DN to use for authentication
+#AUTH_LDAP_USER_DN_TEMPLATE = 'cn=%(user)s,o=Example'
+## Depending on your LDAP server, you might use different DN
+## like:
+## AUTH_LDAP_USER_DN_TEMPLATE = 'ou=users,dc=example,dc=com'
+
+## List of attributes to import from LDAP on login
+## Weblate stores full user name in the first_name attribute
+#AUTH_LDAP_USER_ATTR_MAP = {
+    #'pooling': 'people',
+    #'poolingpeople@ion2s.com': 'exchange.ion2s.com',
+#}
+
 
 # Social auth backends setup
 SOCIAL_AUTH_GITHUB_KEY = ''
@@ -330,7 +348,6 @@ INSTALLED_APPS = (
 )
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, '..', 'locale'), )
-
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
