@@ -2,7 +2,6 @@
 
 #####Remove untagged images:
 docker rmi -f $(docker images | grep "<none>" | awk "{print \$3}")  
-sudo docker rmi $(sudo docker images -f "dangling=true" -q)  
 
 #####Removing all stopped docker containers is:
 docker ps -q |xargs docker rm
