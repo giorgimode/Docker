@@ -6,6 +6,7 @@ Documentation is available in Weblate documentation:
 
 https://docs.weblate.org/en/latest/admin/deployments.html#docker 
 
+Use sudo if permission denied or other unexpected error:
 1. docker-compose build
 2. docker-compose run weblate migrate
 3. docker-compose run weblate collectstatic
@@ -19,6 +20,6 @@ curl -L https://github.com/docker/compose/releases/download/1.4.2/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
 
-If Permission Denied on curl command. Fix:
-sudo bash -c "curl $LINK >a.txt"
+If Permission Denied on curl command, Fix:
+sudo bash -c "https://github.com/docker/compose/releases/download/1.4.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
 
