@@ -5,11 +5,11 @@ https://docs.weblate.org/en/latest/admin/deployments.html#docker
 https://docs.weblate.org/en/weblate-2.4/admin/install.html#production-hosts  
 
 To make changes to weblate docker image, rebuilt and re-run, first we need to kill and exterminate running docker container and image:  
-1. cd /path/docker-weblate
-2. sudo docker stop [weblate-container-id] [memcached-container-id] [postgres-container-id] 
-3. sudo docker rmi -f dockerweblate_weblate memcached:1.4 postgres:9.4
-4. sudo docker-compose kill
-5. sudo docker-compose rm
+1. `cd /path/docker-weblate`
+2. `sudo docker stop [weblate-container-id] [memcached-container-id] [postgres-container-id]` 
+3. `sudo docker rmi -f dockerweblate_weblate memcached:1.4 postgres:9.4`
+4. `sudo docker-compose kill`
+5. `sudo docker-compose rm`
 
 ####Use steps from the parent directory to rebuilt and rerun docker.  
 

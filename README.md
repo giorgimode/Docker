@@ -1,22 +1,22 @@
 ####Tips
 
 #####Remove untagged images:
-docker rmi -f $(docker images | grep "<none>" | awk "{print \$3}")  
+`docker rmi -f $(docker images | grep "<none>" | awk "{print \$3}")`  
 
 #####Removing all stopped docker containers is:
-docker ps -q |xargs docker rm
+`docker ps -q |xargs docker rm`
 
 #####Removing all unused docker images
-docker images -q |xargs docker rmi
+`docker images -q |xargs docker rmi`
 
 #####Run an interactive shell in the Ubuntu image:
-docker run -p 42222:22 -i -t docker-base /bin/bash  
+`docker run -p 42222:22 -i -t docker-base /bin/bash`
 
 #####Run in background
-docker run -d -P -p 42222:22 --name base_docker_container docker-base
+`docker run -d -P -p 42222:22 --name base_docker_container docker-base`
 
 #####Log in running container
-docker exec -it 85c87a8ba674cbf59a0112880738f0830f0f89b4c8d674d1a744dae7558a2f0e bash
+`docker exec -it 85c87a8ba674cbf59a0112880738f0830f0f89b4c8d674d1a744dae7558a2f0e bash`
 
 #####Docker run options
 
