@@ -18,7 +18,7 @@ curl -L https://github.com/docker/compose/releases/download/1.4.2/docker-compose
 chmod +x /usr/local/bin/docker-compose`   
 ```
 
-If Permission Denied on curl command, Fix:  
+If Permission Denied on curl command, alternative:  
 ```
 sudo bash -c "https://github.com/docker/compose/releases/download/1.4.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
 ```
