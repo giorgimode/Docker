@@ -31,3 +31,4 @@ https://docs.weblate.org/en/weblate-2.4/admin/continuous.html#github-setup
 
 You can set the base URL of your Weblate installation (for example https://translate.intern.poolingpeople.com) and Weblate will be notified about every push to GitHub repository.  
 You can use generic Webhook, in that case the Payload URL would have to be full path to the handler, for example https://translate.intern.poolingpeople.com/hooks/github/  
+  
