@@ -6,8 +6,7 @@ The Jenkins Continuous Integration and Delivery server for poolingpeople.
 
 
 # Usage
-Exposed Ports
-#### for main web interface: 8080  
+#####Exposed Ports for main web interface: 8080
 
 #### will be used by attached slave agents: 50000  
 
