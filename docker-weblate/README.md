@@ -13,11 +13,11 @@ Use sudo if permission denied or other unexpected error:
 5. docker-compose up
 
 To Install docker-compose ([Detailed Instructions!](https://github.com/docker/compose/releases)):  
-1. `curl -L https://github.com/docker/compose/releases/download/1.4.2/docker-compose-`uname -s\`-`\uname -m` > /usr/local/bin/docker-compose`  
-2. `chmod +x /usr/local/bin/docker-compose`   
+    curl -L https://github.com/docker/compose/releases/download/1.4.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose`   
 
 
 If Permission Denied on curl command, Fix:  
-`sudo bash -c "https://github.com/docker/compose/releases/download/1.4.2/docker-compose-`uname -s\`-`\uname -m` > /usr/local/bin/docker-compose"`
+    sudo bash -c "https://github.com/docker/compose/releases/download/1.4.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
 
-Exposed Ports in container: 8000
+##### Exposed Ports in container: 8000

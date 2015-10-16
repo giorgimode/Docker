@@ -1,17 +1,8 @@
 docker-sonarqube
 ================
 
-# What is SonarQube?
-
-![SonarQube - Put your technical debt under control](logo.png)
-
-Put your technical debt under control [http://www.sonarqube.org/](http://www.sonarqube.org/)
-
 # How to use this image
-Exposed Ports:
-#### Http port: 9000  
- 
-##### H2 Database port: 9092  
+##### Exposed Ports:  9000 (Http port), 9092(H2 Database port)  
 
 ## Run SonarQube
 
