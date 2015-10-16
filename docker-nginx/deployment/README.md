@@ -1,3 +1,6 @@
+### The description is copied from the official NGINX git repo. It differs from current NGNIX docker repo. Use these commands at your own risk. For proper deployment, use deploy.sh script in a parent directoy.     
+     
+
 # How to use this image
 
 ## hosting some simple static content
