@@ -28,6 +28,12 @@ An admin user with a given password. Can be logged through SSH. Admin user is su
 
 
 ## Usage
+Exposed Ports:
+#### ssh, sftp
+EXPOSE 22
+
+##### jmx
+EXPOSE 1099
 
 ####To run an interactive shell in the Ubuntu image:  
 docker run -p 42222:22 -i -t docker-base /bin/bash  

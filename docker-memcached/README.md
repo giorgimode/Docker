@@ -22,6 +22,7 @@ Memcached's APIs provide a very large hash table distributed across multiple mac
 > [wikipedia.org/wiki/Memcached](https://en.wikipedia.org/wiki/Memcached)
 
 # How to use this image
+#### Exposed Ports: 11211
 
 ```console
 $ docker run --name my-memcache -d memcached

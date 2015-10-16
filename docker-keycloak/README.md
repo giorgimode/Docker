@@ -3,6 +3,7 @@
 This image prepares a basic Keycloak Auth Server and deploys the examples.
 
 ## Usage
+#### Exposed ports: 8080  
 
 To boot in standalone mode
 
