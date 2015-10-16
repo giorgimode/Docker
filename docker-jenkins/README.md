@@ -6,9 +6,7 @@ The Jenkins Continuous Integration and Delivery server for poolingpeople.
 
 
 # Usage
-#####Exposed Ports for main web interface: 8080
-
-#### will be used by attached slave agents: 50000  
+#####Exposed Ports: 8080 (main web interface), 50000 (used by attached slave agents)  
 
 ```
 docker run -p 8080:8080 -p 50000:50000 jenkins
