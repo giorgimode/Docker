@@ -38,10 +38,6 @@ More recipes can be found [here](https://github.com/SonarSource/docker-sonarqube
 
 The administration guide can be found [here](http://docs.sonarqube.org/display/SONAR/Administration+Guide).
 
-# License
-
-This image is distributed under the [license LGPL v3](http://www.gnu.org/licenses/lgpl.txt).
-
 # Supported Docker versions
 
 This image is officially supported on Docker version 1.6.0.
